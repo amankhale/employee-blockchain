@@ -10,18 +10,18 @@ contract Employee {
         string date;
         string education;
         string designation;
-        string[] techStack;
+        string[3] techStack;
         string location;
         string remarks;
     }
 
     event NewEmployee(EmployeeData);
 
-    mapping(string => EmployeeData) public employeeList;
+    mapping(uint => EmployeeData) public employeeList;
     uint public employeeCount = 0;
 
     function addEmployee(EmployeeData memory _employee) public payable {
-        employeeList[_employee.id] = _employee;
+        employeeList[employeeCount] = _employee;
         employeeCount++;
         emit NewEmployee(_employee);
     }
