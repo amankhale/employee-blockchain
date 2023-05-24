@@ -16,6 +16,9 @@ contract Employee {
     }
 
     event NewEmployee(EmployeeData);
+    event DeletedEmployee(string);
+    event UpdatedEmployee(EmployeeData);
+
     EmployeeData[] employeeList;
 
     uint public employeeCount = 0;
@@ -30,6 +33,19 @@ contract Employee {
         emit NewEmployee(_employee);
     }
 
+    function getEmployeeById(
+        string memory _id
+    ) public view returns (EmployeeData memory) {
+        EmployeeData memory _employee;
+        for (uint256 index = 0; index < employeeList.length; index++) {
+            if (compareString(employeeList[index].id, _id)) {
+                _employee = employeeList[index];
+                break;
+            }
+        }
+        return _employee;
+    }
+
     function editEmployee(EmployeeData memory _employee) public payable {
         for (uint256 index = 0; index < employeeCount; index++) {
             if (compareString(employeeList[index].id, _employee.id)) {
@@ -37,6 +53,7 @@ contract Employee {
                 break;
             }
         }
+        emit UpdatedEmployee(_employee);
     }
 
     function deleteEmployee(string memory _id) public payable {
@@ -46,6 +63,7 @@ contract Employee {
                 break;
             }
         }
+        emit DeletedEmployee(_id);
     }
 
     function compareString(
